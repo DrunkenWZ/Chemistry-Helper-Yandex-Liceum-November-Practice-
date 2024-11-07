@@ -8,7 +8,8 @@
 from chempy import balance_stoichiometry
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-
+class Uncorrect_value(Exception):
+    pass
 class Solver(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -93,40 +94,45 @@ class Solver(object):
         
 
     def Solve_Example(self):
-        input_value = self.input_value_browser.toPlainText()
-        input_value = input_value.split(" ")
-        reagent = []
-        product = []
-        reagent_ready = []
-        product_ready = []
-        for i in range(len(input_value)):
-            if input_value[i] != "=":
-                reagent.append(input_value[i])
-            else:
-                break
-        product = set(input_value) - set(reagent)
-        product = list(product)
-        print(f"Реагенты: {reagent}")
-        print(f"Продукты: {product}")
-        print(f"Ввод:{input_value}")
-        for i in range(len(reagent)):
-            if str(reagent[i]) != "+":
-                reagent_ready.append(reagent[i])
-        for i in range(len(product)):
-            if str(product[i]) != "=":
-               product_ready.append(product[i])
-        print(f"реагенты после фильтрации {reagent_ready}")
-        print(f"продукты после фильтрации {product_ready}")
-        output_value = (balance_stoichiometry(reagent_ready, product_ready))
-        print(output_value)
-        reagent_ready = output_value[0]
-        product_ready = output_value[1]
-        print(reagent_ready)
-        print(product_ready)
-        for i in range(len(reagent_ready)):
-            print(reagent_ready["OrderedDict"])
-        
+        try:
+            input_value = self.input_value_browser.toPlainText()
+            input_value = input_value.split(" ")
+            reagent = []
+            product = []
+            reagent_ready = []
+            product_ready = []
+            for i in range(len(input_value)):
+                if input_value[i] != "=":
+                    reagent.append(input_value[i])
+                else:
+                    break
+            product = set(input_value) - set(reagent)
+            product = list(product)
+            print(f"Реагенты: {reagent}")
+            print(f"Продукты: {product}")
+            print(f"Ввод:{input_value}")
+            for i in range(len(reagent)):
+                if str(reagent[i]) != "+":
+                    reagent_ready.append(reagent[i])
+            for i in range(len(product)):
+                if str(product[i]) != "=":
+                    product_ready.append(product[i])
+            print(f"реагенты после фильтрации {reagent_ready}")
+            print(f"продукты после фильтрации {product_ready}")
+            output_value = (balance_stoichiometry(reagent_ready, product_ready))
+            print(output_value)
+            reagent_ready = output_value[0]
+            product_ready = output_value[1]
+            print(reagent_ready)
+            print(product_ready)
+            for i in range(len(reagent_ready)):
+                pass
+        except Uncorrect_value as e:
+            self.output_value_browser.setText(f"Ошибка: {e}")
 
+
+def except_hook(cls, exception, traceback):
+    sys.__excepthook__(cls, exception, traceback)
 
 
 if __name__ == "__main__":
@@ -136,8 +142,8 @@ if __name__ == "__main__":
     ui = Solver()
     ui.setupUi(Form)
     Form.show()
+    sys.excepthook = except_hook
     sys.exit(app.exec())
 
 
 
-#
