@@ -10,6 +10,11 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 class Uncorrect_value(Exception):
     pass
+
+class Unknow_error(Exception):
+    pass
+
+
 class Solver(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -101,6 +106,9 @@ class Solver(object):
             product = []
             reagent_ready = []
             product_ready = []
+        except Unknow_error as e:
+            self.output_value_browser.setText(f"Ошибка: {e}")
+        try:
             for i in range(len(input_value)):
                 if input_value[i] != "=":
                     reagent.append(input_value[i])
@@ -127,8 +135,9 @@ class Solver(object):
             print(product_ready)
             for i in range(len(reagent_ready)):
                 pass
-        except Uncorrect_value as e:
-            self.output_value_browser.setText(f"Ошибка: {e}")
+        except Uncorrect_value as m:
+            self.output_value_browser.setText(f"Ошибка: {m}")
+
 
 
 def except_hook(cls, exception, traceback):
@@ -144,6 +153,3 @@ if __name__ == "__main__":
     Form.show()
     sys.excepthook = except_hook
     sys.exit(app.exec())
-
-
-
