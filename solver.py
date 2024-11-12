@@ -127,22 +127,16 @@ class Solver(object):
             for key, value in reagent_ready.items():
                 left_final.append(str(value) + key)
             for p in range(len(left_final)):
-                if left_final[p] != "1":
-                    left_finals.append(left_final[p])
-                else:
-                    pass
-
+                left_finals.append(left_final[p])
+               
             for ke, vv in product_ready.items():
                 right_final.append(str(vv) + ke)
                 for p in range(len(right_final)):
-                    if right_final[p] != "1":
-                        right_finals.append(right_final[p])
-                    else:
-                        pass
+                    right_finals.append(right_final[p])
             output_final.append(' + '.join(list(left_finals)))
             output_final.append("=")
             output_final.append(' + '.join(list(right_finals)))
-            print(' '.join(list(output_final)))
+            self.output_value_browser.setText(' '.join(list(output_final))) 
 
         except Uncorrect_value as m:
             self.output_value_browser.setText(f"Ошибка: {m}") 
