@@ -101,46 +101,60 @@ class Solver(object):
             product = []
             reagent_ready = []
             product_ready = []
-        except Unknow_error as e:
-            self.output_value_browser.setText(f"Ошибка: {e}")
-        try:
+
+           
             for i in range(len(input_value)):
                 if input_value[i] != "=":
                     reagent.append(input_value[i])
                 else:
                     break
+            
+            
             product = set(input_value) - set(reagent)
             product = list(product)
+
             for i in range(len(reagent)):
                 if str(reagent[i]) != "+":
                     reagent_ready.append(reagent[i])
+            
             for i in range(len(product)):
                 if str(product[i]) != "=":
                     product_ready.append(product[i])
-            output_value = (balance_stoichiometry(reagent_ready, product_ready))
+
+           
+            output_value = balance_stoichiometry(reagent_ready, product_ready)
             reagent_ready = output_value[0]
             product_ready = output_value[1]
+
             left_final = []
-            left_finals = []
             right_final = []
-            right_finals = []
+
+          
             for key, value in reagent_ready.items():
-                left_final.append(str(value) + key)
-            for p in range(len(left_final)):
-                left_finals.append(left_final[p])
-               
-            for ke, vv in product_ready.items():
-                right_final.append(str(vv) + ke)
-                for p in range(len(right_final)):
-                    right_finals.append(right_final[p])
-            output_final.append(' + '.join(list(left_finals)))
+                if value == 1: 
+                    left_final.append(f"{key}")
+                else:
+                    left_final.append(f"{value}{key}")
+
+            for key, value in product_ready.items():
+                if value == 1:  
+                    right_final.append(f"{key}")
+                else:
+                    right_final.append(f"{value}{key}")
+
+        
+            right_final = list(dict.fromkeys(right_final))
+
+            output_final.append(' + '.join(left_final))
             output_final.append("=")
-            output_final.append(' + '.join(list(right_finals)))
-            self.output_value_browser.setText(' '.join(list(output_final))) 
+            output_final.append(' + '.join(right_final))
+            
+            self.output_value_browser.setText(' '.join(output_final)) 
 
         except Uncorrect_value as m:
             self.output_value_browser.setText(f"Ошибка: {m}") 
-
+        except Exception as e:
+            self.output_value_browser.setText(f"Ошибка: {e}")
 
 
 def except_hook(cls, exception, traceback):
