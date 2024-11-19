@@ -1,0 +1,13 @@
+Реакции для теста:
+/От ЧатГПТ/ 
+CH3COOH + NaOH = CH3COONa + H2O
+CH4 + O2 = CO2 + H2O
+Zn + HCl = ZnCl2 + H2
+Cu + NH3 = [Cu(NH3)4]
+C2H5OH + O2 = CH3COOH + H2O
+C3H6 + H2O = C3H8O
+/Свои/
+H2O + KMnO4 + C3H6 = KOH + MnO2 + C3H8O2
+H2SO4
+HNO3
+NaOH
