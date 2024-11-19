@@ -24,13 +24,11 @@ def add_user(username, password):
         return True
     except sqlite3.IntegrityError:
         print(f"Ошибка: пользователь {username} уже существует.") 
-        return False  # Возвращаем False, если пользователь уже существует
+        return False  
     finally:
         conn.close()
 
 def check_user(username, password):
-    # Проверьте, корректно ли вы проверяете пользователя и пароль
-    # Например, если используете SQLite:
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
