@@ -7,13 +7,11 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+
 from PyQt6.QtWidgets import QMainWindow
 
-
-class Ui_MainWindow(QMainWindow):
-    def setupUi(self, MainWindow, solver_function, profile_function):
-        self.solver_function = solver_function
-        self.profile_function = profile_function
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
@@ -55,8 +53,6 @@ class Ui_MainWindow(QMainWindow):
         self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.pushButton_3.clicked.connect(self.solver_function)
-        self.pushButton.clicked.connect(self.profile_function)
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
