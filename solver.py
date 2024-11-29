@@ -1,15 +1,11 @@
 
 from chempy import balance_stoichiometry
 from PyQt6 import QtCore, QtGui, QtWidgets
+from chemlib import Compound
+import sqlite3
+from PyQt6.QtWidgets import QMainWindow, QWidget
 
-class Uncorrect_value(Exception):
-    pass
-
-class Unknow_error(Exception):
-    pass
-
-
-class Solver(object):
+class Solver(QWidget):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(753, 460)
@@ -26,12 +22,6 @@ class Solver(object):
         self.comboBox = QtWidgets.QComboBox(parent=Form)
         self.comboBox.setGeometry(QtCore.QRect(310, 120, 131, 31))
         self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
         self.label_4 = QtWidgets.QLabel(parent=Form)
         self.label_4.setGeometry(QtCore.QRect(310, 60, 121, 71))
         font = QtGui.QFont()
@@ -78,88 +68,29 @@ class Solver(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Solver", "Solver"))
-        self.label_3.setText(_translate("Form", "Решение Задач"))
+        """self.label_3.setText(_translate("Form", "Решение Задач"))
         self.comboBox.setItemText(0, _translate("Form", "Уравнять Реакцию"))
         self.comboBox.setItemText(1, _translate("Form", "Вычислить молякулярную массу вещества"))
         self.comboBox.setItemText(2, _translate("Form", "массовая доля n-ого элемента в веществе"))
         self.comboBox.setItemText(3, _translate("Form", "расчет массы для получения элемента"))
         self.comboBox.setItemText(4, _translate("Form", "Масса и число молекул"))
-        self.comboBox.setItemText(5, _translate("Form", "Электронная формула и количество валентных электронов"))
+        self.comboBox.setItemText(5, _translate("Form", "Электронная формула и количество валентных электронов"))"""
+        self.comboBox.addItems(["Уравнять Реакцию", "Вычислить молякулярную массу вещества", "массовая доля n-ого элемента в веществе"])
         self.label_4.setText(_translate("Form", "Тип задачи"))
         self.label_5.setText(_translate("Form", "Вводное:"))
         self.label_6.setText(_translate("Form", "Выход:"))
         self.pushButtonGet.setText(_translate("Form", "Получить"))
-        self.pushButtonGet.clicked.connect(self.Solve_Example)
-        
+        self.pushButtonGet.clicked.connect(self.on_combobox_changed)
 
-    def Solve_Example(self):
-        try:
-            output_final = []
-            input_value = self.input_value_browser.toPlainText()
-            input_value = input_value.split(" ")
-            reagent = []
-            product = []
-            reagent_ready = []
-            product_ready = []
+    
+    
 
-           
-            for i in range(len(input_value)):
-                if input_value[i] != "=":
-                    reagent.append(input_value[i])
-                else:
-                    break
-            
-            
-            product = set(input_value) - set(reagent)
-            product = list(product)
 
-            for i in range(len(reagent)):
-                if str(reagent[i]) != "+":
-                    reagent_ready.append(reagent[i])
-            
-            for i in range(len(product)):
-                if str(product[i]) != "=":
-                    product_ready.append(product[i])
 
-           
-            output_value = balance_stoichiometry(reagent_ready, product_ready)
-            reagent_ready = output_value[0]
-            product_ready = output_value[1]
-
-            left_final = []
-            right_final = []
-
-          
-            for key, value in reagent_ready.items():
-                if value == 1: 
-                    left_final.append(f"{key}")
-                else:
-                    left_final.append(f"{value}{key}")
-
-            for key, value in product_ready.items():
-                if value == 1:  
-                    right_final.append(f"{key}")
-                else:
-                    right_final.append(f"{value}{key}")
-
-        
-            right_final = list(dict.fromkeys(right_final))
-
-            output_final.append(' + '.join(left_final))
-            output_final.append("=")
-            output_final.append(' + '.join(right_final))
-            
-            self.output_value_browser.setText(' '.join(output_final)) 
-
-        except Uncorrect_value as m:
-            self.output_value_browser.setText(f"Ошибка: {m}") 
-        except Exception as e:
-            self.output_value_browser.setText(f"Ошибка: {e}")
 
 
 def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
-
 
 if __name__ == "__main__":
     import sys
